@@ -2245,7 +2245,7 @@ $(function() {
             return;
         processStepsWait = switchPageSectionsWait = true;
         var layout = $('.layout-process');
-        var section = layout.find('.section-process')
+        var section = layout.find('.section-process');
         var steps = layout.find('.steps .step');
         var activeStep = steps.filter('.is-active');
         var stepTitle = step.find('.step-title');

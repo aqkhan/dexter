@@ -616,3 +616,26 @@ p{
 .vision-navigation>li>a:active{
     background-color: #009cd7;
 }
+
+/*----------------------------------
+    Innovation Steps
+------------------------------------*/
+
+.innovation-steps{
+    color: #ffffff;
+}
+.innovation-steps .step{
+    display: none;
+    margin-top: 150px;
+}
+.innovation-steps .step.active{
+    display: block;
+}
+.innovation-steps .step-num{
+    text-align: right;
+    margin: 113px 212px 0 0;
+}
+.innovation-steps .step-desc{
+    width: 238px;
+    margin-left: 250px;
+}

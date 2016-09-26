@@ -105,9 +105,15 @@ $(document).ready(function() {
     // });
 
 
+    var processCircleWait = false;
+    var processNavWait = false;
+    var processStepWait = false;
     var mouseDown = false;
 
     function visionNavigation(down) {
+        if(processNavWait)
+            return;
+        processNavWait = true;
         var noOfSlices = $('.vision-navigation').find('.li').length;
         var currentIndex = $('.vision-navigation').find('li.active').index() + 1;
         var current = $('.vision-navigation').find('li.active');
@@ -115,10 +121,9 @@ $(document).ready(function() {
         var next,prev;
         next = $('.vision-navigation').find('li').eq(currentIndex);
         prev = $('.vision-navigation').find('li').eq(currentIndex - 2);
-        // var nextDash = next.find('.dash');
-        // var currentDash = current.find('.dash');
+
         var navCircle = $('.vision-nav-cont .circleMove');
-        if(down == true){
+        if(down){
             if(currentIndex == noOfSlices){
                 // next = $('.vision-circle').find('.slice').eq(0);
                 return;
@@ -126,24 +131,31 @@ $(document).ready(function() {
             TweenMax.to(navCircle,1,{top: '+=74',ease: Circ.easeOut,onComplete:function () {
                 current.removeClass('active');
                 next.addClass('active');
+                processNavWait = false;
             }},0.2);
+
 
         }else{
             if(currentIndex == 1){
                 // prev = $('.vision-circle').find('.slice').eq(noOfSlices - 1);
                 return;
             }
-
             TweenMax.to(navCircle,1,{top: '-=74',ease: Circ.easeOut,onComplete:function () {
                 current.removeClass('active');
                 prev.addClass('active');
+                processNavWait = false;
             }},-0.2);
 
         }
-        $(document).on('mousewheel DOMMouseScroll',verticalNav);
+        // $(document).on('mousewheel DOMMouseScroll',verticalNav);
+
     }
 
     function verticalCircleNav(down) {
+        if(processCircleWait)
+            return;
+        processCircleWait = true;
+
         var noOfSlices = $('.vision-circle').find('.slice').length;
         var currentIndex = $('.vision-circle').find('.slice.is-current').index() + 1;
         var current = $('.vision-circle').find('.slice.is-current');
@@ -161,6 +173,7 @@ $(document).ready(function() {
             TweenMax.staggerTo(nextDash,1,{rotation:"+=180",clearProps:"all",onComplete:function () {
                 current.addClass('is-active').removeClass('is-current');
                 next.addClass('is-current');
+                processCircleWait = false;
             }},0.2);
 
         }else{
@@ -171,10 +184,50 @@ $(document).ready(function() {
             TweenMax.staggerTo(currentDash,1,{rotation:"+=180_ccw",clearProps:"all",onComplete:function () {
                 current.removeClass('is-current');
                 prev.addClass('is-current').removeClass('is-active');
+                processCircleWait = false;
             }},-0.2);
 
         }
         // $(document).on('mousewheel DOMMouseScroll',verticalNav);
+
+    }
+
+    function innovateStepChange(down) {
+        if(processStepWait)
+            return;
+        processStepWait = true;
+
+        var noOfSlices = $('.innovation-steps').find('.step').length;
+        var currentIndex = $('.innovation-steps').find('.step.active').index() + 1;
+        var current = $('.innovation-steps').find('.step.active');
+
+        var next,prev;
+        next = $('.innovation-steps').find('.step').eq(currentIndex);
+        prev = $('.innovation-steps').find('.step').eq(currentIndex - 2);
+        if(down == true){
+            if(currentIndex == noOfSlices){
+                // next = $('.vision-circle').find('.slice').eq(0);
+                return;
+            }
+
+            // TweenMax.staggerTo(nextDash,1,{rotation:"+=180",clearProps:"all",onComplete:function () {
+                current.removeClass('active');
+                next.addClass('active');
+                processStepWait = false;
+            // }},0.2);
+
+        }else{
+            if(currentIndex == 1){
+                // prev = $('.vision-circle').find('.slice').eq(noOfSlices - 1);
+                return;
+            }
+            // TweenMax.staggerTo(currentDash,1,{rotation:"+=180_ccw",clearProps:"all",onComplete:function () {
+                current.removeClass('active');
+                prev.addClass('active');
+                processStepWait = false;
+            // }},-0.2);
+        }
+
     }
 
     function mouseUpDownActions(down) {
@@ -208,9 +261,12 @@ $(document).ready(function() {
             else
                 mouseDown = false;
         }
+
+
         mouseUpDownActions(mouseDown);
         verticalCircleNav(mouseDown);
         visionNavigation(mouseDown);
+        innovateStepChange(mouseDown);
         // $(document).off('mousewheel DOMMouseScroll',verticalNav);
     }
 
@@ -219,8 +275,7 @@ $(document).ready(function() {
 
 
     TweenMax.from(".slice .dot",1,{left:200,top:200,ease: Back.easeOut.config(2),clearProps:"all"});
-    // TweenMax.from(".vision-circle",5,{rotation:360,delay:1});
-    TweenMax.staggerFrom(".slice .dash",1,{opacity:0,left:200,top:200,rotation:360,delay:1,clearProps:"all"},0.1);
+    TweenMax.staggerFrom(".slice .dash",1,{opacity:0,left:200,top:200,rotation:360,delay:1,clearProps:"all"},0.03);
 
 
 });
